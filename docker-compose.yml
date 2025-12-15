@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    container_name: monblog-web
+    ports:
+      - "8080:80"     # http://localhost:8080 -> Apache dans le conteneur
+    volumes:
+      - .:/var/www/html   # pratique en développement, synchronise ton code
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: monblog-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: monblog
+      MYSQL_USER: bloguser
+      MYSQL_PASSWORD: blogpass
+    ports:
+      - "3307:3306"       # si tu veux te connecter depuis ton host (facultatif)
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
