@@ -1,0 +1,24 @@
+services:
+  web:
+    image: elouansaidi/monblog-web:latest
+    container_name: monblog-web
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: monblog-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: monblog
+      MYSQL_USER: bloguser
+      MYSQL_PASSWORD: blogpass
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  db_data:
